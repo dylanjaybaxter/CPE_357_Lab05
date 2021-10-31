@@ -17,7 +17,7 @@ and print "path too long" otherwise
 char* strdup(char* str);
 int chdir(char* path);
 
-int main(){
+int main(int argc, char* argv[]){
     /*Initialze Variables*/
     char* path = (char*)malloc(sizeof(char)*MAX_PATH_SIZE);
     path[0] = '\0';
