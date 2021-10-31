@@ -21,8 +21,10 @@ int main(){
     /*Initialze Variables*/
     char* path = (char*)malloc(sizeof(char)*MAX_PATH_SIZE);
     path[0] = '\0';
+    /*Dirlist of 1 char dirs has max of MAX_PATH_SIZE/2 */
     char* dirList[MAX_PATH_SIZE/2];
     int i;
+    /*Initialze dirlist*/
     for(i = 0; i< (MAX_PATH_SIZE/2); i++){
         dirList[i] = NULL;
     }
@@ -67,6 +69,10 @@ int main(){
             }
             if(statEquals(sb, sb_old)){
                 /*Store name of file in path string*/
+                if(dirCount > MAX_PATH_SIZE/2){
+                    printf("Filepath too long\n");
+                    exit(EXIT_FAILURE);
+                }
                 dirList[dirCount] = mystrdup(e->d_name);
                 dirCount++;
                 break;
@@ -81,7 +87,7 @@ int main(){
             exit(EXIT_FAILURE);
         }
     }
-
+    /*Initialize path Process*/
     int pathLength = 0;
     char delim[2];
     delim[0] = '/';
@@ -90,12 +96,16 @@ int main(){
     pathLength++;
     /*Construct Path*/
     for(i=dirCount-1; i >= 0;i--){
+        /*For each directory in reverse order*/
         if(dirList[i] != NULL){
+            /*Increase pathlength*/
             pathLength = pathLength+strlen(dirList[i]);
+            /*Check to make sure path does not exceed limit*/
             if(pathLength < MAX_PATH_SIZE-1){
-                limitConcat(path, dirList[i], MAX_PATH_SIZE);
+                /*Add dir name and foreward slash*/
                 limitConcat(path, delim, MAX_PATH_SIZE);
                 pathLength++;
+                limitConcat(path, dirList[i], MAX_PATH_SIZE);
             }
             else{
                 printf("Filepath too long!\n");

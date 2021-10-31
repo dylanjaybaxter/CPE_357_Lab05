@@ -12,6 +12,7 @@ operations
 #include<string.h>
 #include"dir.h"
 
+/*Checks is the current directory is the root directory*/
 int isBaseDir(){
     struct stat sb1;
     struct stat sb2;
@@ -31,6 +32,8 @@ int isBaseDir(){
         return 0;
     }
 }
+
+/*Checks if the stats of 2 file objects are equal*/
 int statEquals(struct stat sb1, struct stat sb2){
     if(sb1.st_dev == sb2.st_dev && sb1.st_ino == sb2.st_ino){
         return 1;
@@ -39,6 +42,8 @@ int statEquals(struct stat sb1, struct stat sb2){
         return 0;
     }
 }
+
+/*Personal Implementation of strncat() functinoality*/
 void limitConcat(char* dest, char* lim, int maxDestSize){
     int i = strlen(dest);
     int limSize = strlen(lim);
@@ -51,6 +56,7 @@ void limitConcat(char* dest, char* lim, int maxDestSize){
     dest[i] = '\0';
 }
 
+/*Personal Implementation of strdup functinoality*/
 char* mystrdup(char* pt){
     int ptLen = strlen(pt);
     char* dup = (char*)malloc(sizeof(char)*(ptLen+1));
