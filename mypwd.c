@@ -20,6 +20,7 @@ int chdir(char* path);
 int main(){
     /*Initialze Variables*/
     char* path = (char*)malloc(sizeof(char)*MAX_PATH_SIZE);
+    path[0] = '\0';
     char* dirList[MAX_PATH_SIZE/2];
     int i;
     for(i = 0; i< (MAX_PATH_SIZE/2); i++){
@@ -66,7 +67,7 @@ int main(){
             }
             if(statEquals(sb, sb_old)){
                 /*Store name of file in path string*/
-                dirList[dirCount] = strdup(e->d_name);
+                dirList[dirCount] = mystrdup(e->d_name);
                 dirCount++;
                 break;
             }
@@ -80,20 +81,20 @@ int main(){
             exit(EXIT_FAILURE);
         }
     }
-    path = dirList[dirCount-1];
-    int pathLength = strlen(dirList[dirCount-1]);
+
+    int pathLength = 0;
     char delim[2];
     delim[0] = '/';
     delim[1] = '\0';
-    path = strncat(path, delim, pathLength+1);
+    limitConcat(path, delim, MAX_PATH_SIZE);
     pathLength++;
     /*Construct Path*/
-    for(i=dirCount-2; i >= 0;i--){
+    for(i=dirCount-1; i >= 0;i--){
         if(dirList[i] != NULL){
             pathLength = pathLength+strlen(dirList[i]);
             if(pathLength < MAX_PATH_SIZE-1){
-                path = strncat(path, dirList[i], pathLength);
-                path = strncat(path, delim, pathLength+1);
+                limitConcat(path, dirList[i], MAX_PATH_SIZE);
+                limitConcat(path, delim, MAX_PATH_SIZE);
                 pathLength++;
             }
             else{
@@ -111,5 +112,10 @@ int main(){
 
     /*Free Memory*/
     free(path);
+    for(i = 0; i< (MAX_PATH_SIZE/2); i++){
+        if(dirList[i] != NULL){
+                free(dirList[i]);
+        }
+    }
     return 0;
 }

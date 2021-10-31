@@ -18,3 +18,6 @@ clean: mypwd
 
 debug: mypwd
 	gdb mypwd
+
+valgrind: mypwd
+	valgrind -s --leak-check=full --show-leak-kinds=all ./mypwd

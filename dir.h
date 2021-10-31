@@ -13,3 +13,7 @@ operations
 int isBaseDir();
 
 int statEquals(struct stat sb1, struct stat sb2);
+
+void limitConcat(char* dest, char* lim, int destSize);
+
+char* mystrdup(char* pt);
