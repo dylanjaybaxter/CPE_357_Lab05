@@ -6,26 +6,19 @@ Description: This file contains main functionality for a program that will
 print the curren working directory of the the user up to 2048 characters.
 and print "path too long" otherwise
 */
-#include<sys/stat.h>
-#include<stdio.h>
-#include<stdlib.h>
-#include<dirent.h>
-#include<string.h>
+#include<unistd.h>
+#include<limits.h>
 #include"dir.h"
-#define MAX_PATH_SIZE 2048
-
-char* strdup(char* str);
-int chdir(char* path);
 
 int main(int argc, char* argv[]){
     /*Initialze Variables*/
-    char* path = (char*)malloc(sizeof(char)*MAX_PATH_SIZE);
+    char* path = (char*)malloc(sizeof(char)*PATH_MAX);
     path[0] = '\0';
-    /*Dirlist of 1 char dirs has max of MAX_PATH_SIZE/2 */
-    char* dirList[MAX_PATH_SIZE/2];
+    /*Dirlist of 1 char dirs has max of PATH_MAX/2 */
+    char* dirList[PATH_MAX/2];
     int i;
     /*Initialze dirlist*/
-    for(i = 0; i< (MAX_PATH_SIZE/2); i++){
+    for(i = 0; i< (PATH_MAX/2); i++){
         dirList[i] = NULL;
     }
     int dirCount = 0;
@@ -69,7 +62,7 @@ int main(int argc, char* argv[]){
             }
             if(statEquals(sb, sb_old)){
                 /*Store name of file in path string*/
-                if(dirCount > MAX_PATH_SIZE/2){
+                if(dirCount > PATH_MAX/2){
                     printf("Filepath too long\n");
                     exit(EXIT_FAILURE);
                 }
@@ -92,7 +85,7 @@ int main(int argc, char* argv[]){
     char delim[2];
     delim[0] = '/';
     delim[1] = '\0';
-    limitConcat(path, delim, MAX_PATH_SIZE);
+    limitConcat(path, delim, PATH_MAX);
     pathLength++;
     /*Construct Path*/
     for(i=dirCount-1; i >= 0;i--){
@@ -101,11 +94,11 @@ int main(int argc, char* argv[]){
             /*Increase pathlength*/
             pathLength = pathLength+strlen(dirList[i]);
             /*Check to make sure path does not exceed limit*/
-            if(pathLength < MAX_PATH_SIZE-1){
+            if(pathLength < PATH_MAX-1){
                 /*Add dir name and foreward slash*/
-                limitConcat(path, delim, MAX_PATH_SIZE);
+                limitConcat(path, delim, PATH_MAX);
                 pathLength++;
-                limitConcat(path, dirList[i], MAX_PATH_SIZE);
+                limitConcat(path, dirList[i], PATH_MAX);
             }
             else{
                 printf("Filepath too long!\n");
@@ -122,7 +115,7 @@ int main(int argc, char* argv[]){
 
     /*Free Memory*/
     free(path);
-    for(i = 0; i< (MAX_PATH_SIZE/2); i++){
+    for(i = 0; i< (PATH_MAX/2); i++){
         if(dirList[i] != NULL){
                 free(dirList[i]);
         }

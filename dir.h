@@ -9,6 +9,8 @@ operations
 #include<stdio.h>
 #include<stdlib.h>
 #include<dirent.h>
+#include<sys/stat.h>
+#include<string.h>
 
 /*Checks if the current working directory is the root*/
 int isBaseDir();

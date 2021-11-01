@@ -5,11 +5,6 @@ File: dir.c
 Description: This file contains functions relating to Directory
 operations
 */
-#include<dirent.h>
-#include<sys/stat.h>
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
 #include"dir.h"
 
 /*Checks is the current directory is the root directory*/
